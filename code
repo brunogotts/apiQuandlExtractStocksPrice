@@ -28,8 +28,8 @@ for i in range(len(companies_vector)):
     
 df = df.append(appended_df, True)
 
-# Checking some lines of the dataframe
+### Checking some lines of the dataframe
 df.head()
 
-# Exporting CSV
+### Exporting CSV
 df.to_csv('stacked_companies_stockPrice_pythonExample.csv')
