@@ -1,0 +1,35 @@
+### Initial Settings
+
+import pandas as pd
+import quandl
+quandl.ApiConfig.api_key = "INSERT_YOUR_QUANDL_FREE_KEY"
+
+### Input params for API
+start = pd.to_datetime('2012-01-01')
+end = pd.to_datetime('2017-01-01')
+
+# Selecting some companies for our example
+
+companies_vector = ["MSFT","AAPL","CSCO","IBM","AMZN","NKE","DIS","JNJ","MCD","INTC"]
+
+### Getting stock prices in a loop and make some data adjusts for power bi input
+
+appended_df = []
+for i in range(len(companies_vector)):
+    print(companies_vector[i])
+    for_get_string = "WIKI/%s.11" % (companies_vector[i])
+    print(for_get_string)
+    df = quandl.get(for_get_string,start_date=start,end_date=end)
+    df['date'] = df.index
+    df['company'] = companies_vector[i]
+    # store DataFrame in list
+    df['Normed Return'] = df['Adj. Close']/df.iloc[0]['Adj. Close']
+    appended_df.append(df)
+    
+df = df.append(appended_df, True)
+
+# Checking some lines of the dataframe
+df.head()
+
+# Exporting CSV
+df.to_csv('stacked_companies_stockPrice_pythonExample.csv')
